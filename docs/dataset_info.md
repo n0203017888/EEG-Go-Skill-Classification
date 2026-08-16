@@ -1,0 +1,152 @@
+# EEG 圍棋棋力分類 — 資料集說明
+
+## 研究目標
+
+透過 EEG 腦波訊號分類圍棋棋力等級（3 類分類）。
+
+---
+
+## 資料集總覽
+
+| 項目 | 值 |
+|------|------|
+| 總受試者 | 57 人（三個 session 皆完整） |
+| 總 trials | 5,096 筆 |
+| 類別數 | 3（amateur / master / prof） |
+| 取樣率 | 500 Hz |
+| 通道數 | 36（常用前 32） |
+| 每 trial 長度 | 10,500 samples = **21 秒** |
+| 檔案格式 | EEGLAB `.set` + `.fdt`（HDF5 格式） |
+
+---
+
+## 類別分佈
+
+| 類別 | 說明 | 完整受試者數 | 總 trials 數 |
+|------|------|-------------|-------------|
+| amateur | 業餘低段 | 28 人 | 2,490 |
+| master | 業餘高段 | 21 人 | 1,887 |
+| prof | 國手 | 8 人 | 719 |
+
+---
+
+## Session 說明
+
+EEG 訊號為非連續錄製，分成 3 個 session（對應圍棋不同階段）：
+
+| Session | 資料夾 | 對應階段 |
+|---------|--------|----------|
+| ss01 | `ss01/` | 開局階段 |
+| ss02 | `ss02/` | 中盤階段 |
+| ss03 | `ss03/` | 尾盤階段 |
+
+每個 session 每位受試者通常有 **30 個 trials**（少數例外見下方）。
+
+---
+
+## 資料路徑
+
+```
+D:\Tseng\圍棋\
+├── amateur\ori\
+│   ├── ss01\    # 30 個 .set 檔（含 2 位不完整 subject）
+│   ├── ss02\    # 30 個 .set 檔
+│   └── ss03\    # 28 個 .set 檔
+├── master\ori\
+│   ├── ss01\    # 21 個 .set 檔
+│   ├── ss02\    # 21 個 .set 檔
+│   └── ss03\    # 21 個 .set 檔
+└── prof\ori\
+    ├── ss01\    # 8 個 .set 檔
+    ├── ss02\    # 8 個 .set 檔
+    └── ss03\    # 8 個 .set 檔
+```
+
+### 路徑常數
+
+```python
+BASE_AMATEUR = r'D:\Tseng\圍棋\amateur\ori'
+BASE_MASTER  = r'D:\Tseng\圍棋\master\ori'
+BASE_PROF    = r'D:\Tseng\圍棋\prof\ori'
+```
+
+---
+
+## 完整受試者列表
+
+### Amateur（28 人）
+
+`sub-22`, `sub-23`, `sub-24`, `sub-33`, `sub-38`, `sub-39`, `sub-40`, `sub-41`,
+`sub-42`, `sub-43`, `sub-44`, `sub-45`, `sub-46`, `sub-47`, `sub-48`, `sub-49`,
+`sub-51`, `sub-P025`, `sub-P026`, `sub-P027`, `sub-P028`, `sub-P029`, `sub-P030`,
+`sub-P031`, `sub-P032`, `sub-sub34`, `sub-sub35`, `sub-sub50`
+
+> 不完整：`sub-21`、`sub-36`（缺 ss03）
+
+### Master（21 人）
+
+`sub-52`, `sub-55`, `sub-56`, `sub-57`, `sub-58`, `sub-59`, `sub-60`, `sub-61`,
+`sub-63`, `sub-67`, `sub-68`, `sub-69`, `sub-70`, `sub-71`, `sub-72`, `sub-73`,
+`sub-75`, `sub-76`, `sub-77`, `sub-78`, `sub-80`
+
+### Prof（8 人）
+
+`sub-53`, `sub-54`, `sub-62`, `sub-64`, `sub-65`, `sub-66`, `sub-74`, `sub-79`
+
+---
+
+## Trial 數異常紀錄
+
+大部分 subject 每 session 有 30 trials，以下為例外：
+
+| Subject | Session | Trials | 備註 |
+|---------|---------|--------|------|
+| sub-24 | ss01 | 29 | |
+| sub-P027 | ss01 | 29 | |
+| sub-36 | ss02 | 9 | 不完整 subject（缺 ss03） |
+| sub-P030 | ss02 | 29 | |
+| sub-33 | ss03 | 4 | |
+| sub-P031 | ss03 | 29 | |
+| sub-63 | ss01 | 29 | |
+| sub-63 | ss02 | 29 | |
+| sub-77 | ss02 | 29 | |
+| sub-65 | ss02 | 29 | |
+
+---
+
+## 檔案命名格式
+
+```
+{subject_id}_ses-{session}_{task}_task-Default_run-001_eegICARMepochs.set
+{subject_id}_ses-{session}_{task}_task-Default_run-001_eegICARMepochs.fdt
+```
+
+- Subject ID 格式：`sub-{數字}` 或 `sub-P{數字}` 或 `sub-sub{數字}`
+- 從檔名取 subject ID：`filename.split('_ses-')[0]`
+
+---
+
+## .set 檔結構（HDF5）
+
+| 欄位 | 說明 | 典型值 |
+|------|------|--------|
+| `nbchan` | 通道數 | 36 |
+| `pnts` | 每 trial 的 sample 數 | 10500 |
+| `trials` | trial 數 | 30 |
+| `srate` | 取樣率 (Hz) | 500 |
+
+### 讀取方式
+
+```python
+import h5py, numpy as np
+
+with h5py.File(set_path, 'r') as f:
+    n_ch     = int(np.array(f['nbchan']).flat[0])
+    n_pnts   = int(np.array(f['pnts']).flat[0])
+    n_trials = int(np.array(f['trials']).flat[0])
+
+# .fdt 為 raw binary float32
+raw = np.fromfile(fdt_path, dtype='float32')
+data = raw.reshape((n_ch, n_pnts, n_trials), order='F')
+data = data.transpose(2, 0, 1)  # → (trials, channels, timepoints)
+```

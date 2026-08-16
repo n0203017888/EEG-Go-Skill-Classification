@@ -1,0 +1,14 @@
+# 由專案 notebook 的 import 掃描而來，版本未鎖定
+# 建議：python -m venv .venv && .venv\Scripts\activate && pip install -r requirements.txt
+
+numpy
+scipy
+pandas
+matplotlib
+seaborn
+scikit-learn
+h5py            # 讀取 EEGLAB .set（HDF5 格式）
+shap            # SVM_PLV 的模型可解釋性分析
+xgboost         # ML_PLV_BE 多分類器比較
+lightgbm        # ML_PLV_BE 多分類器比較
+jupyterlab
