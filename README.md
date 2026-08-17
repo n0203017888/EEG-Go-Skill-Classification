@@ -21,7 +21,7 @@ EEG (.set) → PLV / BE 特徵 → 腦區分群 → PCA(0.95) → SVM-RBF → se
 
 同一位受試者的三個 session 各自預測後再合併，準確率從 84% 拉升到 93–95%。
 
-![Session vs Hard Vote vs Soft Vote](SVM_PLV/svm_parietal_majority_vote.png)
+![Session vs Hard Vote vs Soft Vote](SVM_PLV_BE/svm_plv_be_parietal_majority_vote.png)
 
 | 評估層級 | N | Accuracy | Macro-F1 |
 |----------|:---:|:---:|:---:|
@@ -31,7 +31,7 @@ EEG (.set) → PLV / BE 特徵 → 腦區分群 → PCA(0.95) → SVM-RBF → se
 
 ### 頂葉（Parietal）區資訊量最高
 
-![五腦區混淆矩陣](SVM_PLV/svm_plv_be_combined_confusion.png)
+![五腦區混淆矩陣](SVM_PLV_BE/svm_plv_be_combined_confusion.png)
 
 | 腦區 | Frontal | Central | **Parietal** | Temporal | Occipital |
 |------|:---:|:---:|:---:|:---:|:---:|
@@ -104,7 +104,8 @@ master 內部 LOSO 出現 r = −0.363 的符號翻轉。
 
 | 資料夾 | 內容 |
 |--------|------|
-| **[SVM_PLV/](SVM_PLV/)** | ⭐ 主要成果：PLV+BE 合併分類、頻帶消融、SHAP 解釋、t-SNE / LDA / KPCA 視覺化 |
+| **[SVM_PLV_BE/](SVM_PLV_BE/)** | ⭐ 主要成果：PLV+BE 合併分類、頻帶消融、SHAP 解釋、t-SNE / LDA / KPCA 視覺化 |
+| [SVM_PLV/](SVM_PLV/) | 只用 PLV 的分類（基準線）、session 擾動穩健性測試 |
 | [SVM_BE/](SVM_BE/) | 只用 BE 的分類（基準線）、session 擾動穩健性測試、資料對齊檢查 |
 | [ML_PLV_BE/](ML_PLV_BE/) | 11 種傳統分類器的 Accuracy / F1 比較 |
 | [RF_PLV_BE/](RF_PLV_BE/) | Random Forest 版本（單棵樹視覺化、feature importance） |
@@ -113,7 +114,7 @@ master 內部 LOSO 出現 r = −0.363 的符號翻轉。
 | [winstep_predict/](winstep_predict/) | 勝步迴歸（負面結果） |
 | [docs/](docs/) | 資料集規格、完整實驗記錄 |
 
-**建議入口**：[SVM_PLV/svm_plv_be_combined.ipynb](SVM_PLV/svm_plv_be_combined.ipynb) — 最佳結果的完整流程
+**建議入口**：[SVM_PLV_BE/svm_plv_be_combined.ipynb](SVM_PLV_BE/svm_plv_be_combined.ipynb) — 最佳結果的完整流程
 
 詳細實驗記錄見 **[docs/專案總覽.md](docs/專案總覽.md)**，
 分腦區流程與 PCA 原理見 **[SVM_BE/流程介紹.md](SVM_BE/流程介紹.md)**。
