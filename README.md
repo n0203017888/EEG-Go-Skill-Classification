@@ -105,7 +105,7 @@ master 內部 LOSO 出現 r = −0.363 的符號翻轉。
 | 資料夾 | 內容 |
 |--------|------|
 | **[SVM_PLV/](SVM_PLV/)** | ⭐ 主要成果：PLV+BE 合併分類、頻帶消融、SHAP 解釋、t-SNE / LDA / KPCA 視覺化 |
-| [SVM/](SVM/) | 只用 BE 的分類（基準線）、session 擾動穩健性測試、資料對齊檢查 |
+| [SVM_BE/](SVM_BE/) | 只用 BE 的分類（基準線）、session 擾動穩健性測試、資料對齊檢查 |
 | [ML_PLV_BE/](ML_PLV_BE/) | 11 種傳統分類器的 Accuracy / F1 比較 |
 | [RF_PLV_BE/](RF_PLV_BE/) | Random Forest 版本（單棵樹視覺化、feature importance） |
 | [RT1_ms_predict/](RT1_ms_predict/) | 反應時間迴歸（負面結果） |
@@ -116,7 +116,7 @@ master 內部 LOSO 出現 r = −0.363 的符號翻轉。
 **建議入口**：[SVM_PLV/svm_plv_be_combined.ipynb](SVM_PLV/svm_plv_be_combined.ipynb) — 最佳結果的完整流程
 
 詳細實驗記錄見 **[docs/專案總覽.md](docs/專案總覽.md)**，
-分腦區流程與 PCA 原理見 **[SVM/流程介紹.md](SVM/流程介紹.md)**。
+分腦區流程與 PCA 原理見 **[SVM_BE/流程介紹.md](SVM_BE/流程介紹.md)**。
 
 ---
 
